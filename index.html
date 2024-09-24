@@ -1,5 +1,6 @@
+ggggggghhh
 
-ههههه
+
 
 
 <!DOCTYPE html>
@@ -116,8 +117,14 @@
         let dislikeBtn = document.getElementById("dislike-btn");
         let likeCount = document.getElementById("like-count");
         let dislikeCount = document.getElementById("dislike-count");
-        let liked = false;
-        let disliked = false;
+
+        // Get like and dislike state from localStorage, or initialize as false
+        let liked = JSON.parse(localStorage.getItem("liked")) || false;
+        let disliked = JSON.parse(localStorage.getItem("disliked")) || false;
+
+        // Set the initial state for likes and dislikes based on localStorage
+        likeCount.textContent = liked ? 1 : 0;
+        dislikeCount.textContent = disliked ? 1 : 0;
 
         // Like button functionality
         likeBtn.addEventListener("click", () => {
@@ -131,6 +138,10 @@
                 dislikeCount.textContent = 0;
                 disliked = false;
             }
+
+            // Save the liked and disliked state to localStorage
+            localStorage.setItem("liked", liked);
+            localStorage.setItem("disliked", disliked);
         });
 
         // Dislike button functionality
@@ -145,6 +156,10 @@
                 likeCount.textContent = 0;
                 liked = false;
             }
+
+            // Save the liked and disliked state to localStorage
+            localStorage.setItem("liked", liked);
+            localStorage.setItem("disliked", disliked);
         });
     </script>
 </body>
