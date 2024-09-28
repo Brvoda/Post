@@ -1,8 +1,3 @@
-ggggggghhh
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,7 +87,7 @@ ggggggghhh
             </div>
         </div>
         <div class="content">
-            <p>Had an amazing day today! Sometimes the small things in life bring the biggest smiles. Grateful for all the positive vibes and good people around me. 💖 #GoodVibes #Gratitude #LivingMyBestLife</p>
+            <p>555555Had an amazing day today! Sometimes the small things in life bring the biggest smiles. Grateful for all the positive vibes and good people around me. 💖 #GoodVibes #Gratitude #LivingMyBestLife</p>
         </div>
         <div class="actions">
             <button id="like-btn"><i class="fas fa-thumbs-up"></i> <span id="like-count">0</span></button>
@@ -118,49 +113,60 @@ ggggggghhh
         let likeCount = document.getElementById("like-count");
         let dislikeCount = document.getElementById("dislike-count");
 
-        // Get like and dislike state from localStorage, or initialize as false
-        let liked = JSON.parse(localStorage.getItem("liked")) || false;
-        let disliked = JSON.parse(localStorage.getItem("disliked")) || false;
+        // Initialize like and dislike counts from localStorage
+        let totalLikes = parseInt(localStorage.getItem("totalLikes")) || 0;
+        let userLiked = JSON.parse(localStorage.getItem("userLiked")) || false;
+        let userDisliked = JSON.parse(localStorage.getItem("userDisliked")) || false;
 
-        // Set the initial state for likes and dislikes based on localStorage
-        likeCount.textContent = liked ? 1 : 0;
-        dislikeCount.textContent = disliked ? 1 : 0;
+        // Set the initial like/dislike counts
+        likeCount.textContent = totalLikes;
+        dislikeCount.textContent = userDisliked ? 1 : 0;
 
         // Like button functionality
         likeBtn.addEventListener("click", () => {
-            if (liked) {
-                likeCount.textContent = 0;
-                liked = false;
-            } else {
-                likeCount.textContent = 1;
-                liked = true;
-                // Reset dislike if like is pressed
-                dislikeCount.textContent = 0;
-                disliked = false;
+            if (!userLiked) {
+                totalLikes += 1;
+                likeCount.textContent = totalLikes;
+                userLiked = true;
+
+                // If dislike was previously clicked, reset it
+                if (userDisliked) {
+                    dislikeCount.textContent = 0;
+                    userDisliked = false;
+                    localStorage.setItem("userDisliked", false);
+                }
             }
 
-            // Save the liked and disliked state to localStorage
-            localStorage.setItem("liked", liked);
-            localStorage.setItem("disliked", disliked);
+            // Save the updated like count and user's like state to localStorage
+            localStorage.setItem("totalLikes", totalLikes);
+            localStorage.setItem("userLiked", userLiked);
         });
 
         // Dislike button functionality
         dislikeBtn.addEventListener("click", () => {
-            if (disliked) {
-                dislikeCount.textContent = 0;
-                disliked = false;
-            } else {
+            if (!userDisliked) {
                 dislikeCount.textContent = 1;
-                disliked = true;
-                // Reset like if dislike is pressed
-                likeCount.textContent = 0;
-                liked = false;
+                userDisliked = true;
+
+                // If like was previously clicked, reset it for this user
+                if (userLiked) {
+                    totalLikes -= 1;
+                    likeCount.textContent = totalLikes;
+                    userLiked = false;
+                    localStorage.setItem("userLiked", false);
+                }
+            } else {
+                dislikeCount.textContent = 0;
+                userDisliked = false;
             }
 
-            // Save the liked and disliked state to localStorage
-            localStorage.setItem("liked", liked);
-            localStorage.setItem("disliked", disliked);
+            // Save the dislike state to localStorage
+            localStorage.setItem("userDisliked", userDisliked);
+            localStorage.setItem("totalLikes", totalLikes);
         });
+
+        // Ensure the like count is shown for the current session
+        likeCount.textContent = totalLikes;
     </script>
 </body>
-</html>
+        </html>
